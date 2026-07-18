@@ -21,14 +21,14 @@ interface Props {
 }
 
 const NAV: { icon: React.ElementType; label: string; page: Page }[] = [
-  { icon: LayoutDashboard, label: 'Overview',        page: 'dashboard' },
-  { icon: WalletCards,     label: 'Transactions',    page: 'transactions' },
-  { icon: Upload,          label: 'Upload Statement',page: 'upload' },
-  { icon: BrainCircuit,    label: 'AI Insights',     page: 'chat' },
-  { icon: Wrench,          label: 'AI Tools',        page: 'tools' },
-  { icon: Compass,         label: 'Travel Guide',    page: 'travel' },
-  { icon: BookOpen,        label: 'Khatabook',       page: 'khatabook' },
-  { icon: Settings,        label: 'Settings',        page: 'settings' },
+  { icon: LayoutDashboard, label: 'Overview',         page: 'dashboard' },
+  { icon: WalletCards,     label: 'Transactions',     page: 'transactions' },
+  { icon: Upload,          label: 'Upload Statement', page: 'upload' },
+  { icon: BrainCircuit,    label: 'AI Insights',      page: 'chat' },
+  { icon: Wrench,          label: 'AI Tools',         page: 'tools' },
+  { icon: Compass,         label: 'Travel Guide',     page: 'travel' },
+  { icon: BookOpen,        label: 'Khatabook',        page: 'khatabook' },
+  { icon: Settings,        label: 'Settings',         page: 'settings' },
 ];
 
 export default function Sidebar({ page, onNav, mobileOpen }: Props) {
@@ -41,7 +41,7 @@ export default function Sidebar({ page, onNav, mobileOpen }: Props) {
     .slice(0, 2) ?? 'U';
 
   return (
-    <aside className={`sidebar${mobileOpen ? ' open' : ''}`}>
+    <aside className={`sidebar${mobileOpen ? ' sidebar-open' : ''}`}>
       <div className="brand">
         <i className="brand-icon">₹</i>
         PaisaPilot <b>AI</b>
