@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: paisapilot-api
+    env: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        value: sqlite:///./paisapilot.db
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MAX_UPLOAD_MB
+        value: "10"
+      - key: OPENAI_API_KEY
+        value: ""
+    disk:
+      name: paisapilot-db
+      mountPath: /opt/render/project/src
+      sizeGB: 1
+
+  - type: web
+    name: paisapilot-web
+    env: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://paisapilot-api.onrender.com
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

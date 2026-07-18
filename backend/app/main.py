@@ -6,6 +6,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Optional
 
+from contextlib import asynccontextmanager
 from fastapi import Depends, FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
@@ -44,7 +45,16 @@ pwd_hash = lambda p: _bcrypt.hashpw(p.encode(), _bcrypt.gensalt()).decode()
 pwd_verify = lambda p, h: _bcrypt.checkpw(p.encode(), h.encode())
 bearer = HTTPBearer()
 
-app = FastAPI(title="PaisaPilot AI API", version="2.0.0")
+# ─── Lifespan (replaces deprecated @app.on_event) ────────────────────────────
+
+@asynccontextmanager
+async def lifespan(application: FastAPI):
+    from .khatabook_models import KbParty, KbEntry  # noqa: F401 — registers tables
+    Base.metadata.create_all(engine)
+    yield
+
+
+app = FastAPI(title="PaisaPilot AI API", version="2.0.0", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -52,15 +62,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-# ─── Startup ─────────────────────────────────────────────────────────────────
-
-@app.on_event("startup")
-def startup():
-    # Import khatabook models so they are registered with Base before create_all
-    from .khatabook_models import KbParty, KbEntry  # noqa: F401
-    Base.metadata.create_all(engine)
 
 
 # ─── Helpers ─────────────────────────────────────────────────────────────────
