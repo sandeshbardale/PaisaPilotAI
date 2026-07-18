@@ -794,8 +794,9 @@ def _build_chat_answer(question: str, transactions: list) -> str:
 
     if any(w in q for w in ["save", "saving", "budget"]):
         if savings >= 0:
+            quality = "great" if savings_rate >= 20 else "a good start"
             return (
-                f"You're saving ₹{savings:,.0f} ({savings_rate}% of income) — that's {"great" if savings_rate >= 20 else "a good start"}. "
+                f"You're saving ₹{savings:,.0f} ({savings_rate}% of income) — that's {quality}. "
                 + (f"Your biggest expense is **{top_cat}** at ₹{by_cat[top_cat]:,.0f}. Reducing it by 10% could free up ₹{by_cat[top_cat]*0.1:,.0f} more per month." if top_cat else "")
                 + " This is educational guidance, not financial advice."
             )
