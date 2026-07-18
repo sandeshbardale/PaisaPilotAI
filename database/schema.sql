@@ -1,0 +1,4 @@
+CREATE TABLE users (id SERIAL PRIMARY KEY, email VARCHAR(255) UNIQUE NOT NULL, name VARCHAR(120) NOT NULL, password_hash VARCHAR(255) NOT NULL, created_at TIMESTAMP NOT NULL DEFAULT NOW());
+CREATE TABLE transactions (id SERIAL PRIMARY KEY, user_id INTEGER NOT NULL REFERENCES users(id), date TIMESTAMP NOT NULL, description VARCHAR(255) NOT NULL, category VARCHAR(80) NOT NULL, amount NUMERIC(12,2) NOT NULL, transaction_type VARCHAR(20) NOT NULL CHECK (transaction_type IN ('income','expense')), balance NUMERIC(12,2), source VARCHAR(30) NOT NULL DEFAULT 'manual');
+CREATE TABLE chat_history (id SERIAL PRIMARY KEY, user_id INTEGER NOT NULL REFERENCES users(id), question TEXT NOT NULL, answer TEXT NOT NULL, created_at TIMESTAMP NOT NULL DEFAULT NOW());
+CREATE INDEX transactions_user_date_idx ON transactions(user_id,date DESC);

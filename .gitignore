@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+*.db
+*.sqlite3
+venv/
+.venv/
+env/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+_test_*.py
+_check.py
+_migrate.py
+
+# Node
+node_modules/
+frontend/dist/
+frontend/.npm-cache/
+*.log
+.DS_Store
+Thumbs.db
