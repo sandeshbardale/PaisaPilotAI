@@ -31,7 +31,14 @@ from .travel_copilot import (
 
 # ─── Config ──────────────────────────────────────────────────────────────────
 
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./paisapilot.db")
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:////opt/render/project/data/paisapilot.db")
+# Ensure the data directory exists for persistent disk on Render
+_db_dir = os.path.dirname(DATABASE_URL.replace("sqlite:////", "/").replace("sqlite:///./", ""))
+if _db_dir and not os.path.exists(_db_dir):
+    try:
+        os.makedirs(_db_dir, exist_ok=True)
+    except Exception:
+        pass
 SECRET = os.getenv("JWT_SECRET", "change-me-before-production")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 MAX_UPLOAD_MB = int(os.getenv("MAX_UPLOAD_MB", "10"))
